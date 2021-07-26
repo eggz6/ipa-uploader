@@ -209,5 +209,3 @@ func uploadQRCode(ctx context.Context) exec {
 		return nil
 	}
 }
-
-//png, err := qrcode.Encode("https://example.org", qrcode.Medium, 256)
