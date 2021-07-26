@@ -98,7 +98,6 @@ func SpellManifest(ipaURL, bid, bver, title, icon string) string {
 func SpellInstallHtml(manifestURL, iconURL, title string) string {
 	htmlStr := format.ReplaceArgs(html, map[string]string{
 		"TITLE":        title,
-		"MESSAGE":      "Eggz6 IPA",
 		"MANIFEST_URL": manifestURL,
 		"ICON_URL":     iconURL,
 	})

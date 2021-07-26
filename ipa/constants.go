@@ -59,6 +59,9 @@ const html = `
                 text-align: center;
 		vertical-align: middle;
             }
+            h2 {
+                text-align: center;
+            }
             p {
                 text-align: center;
             }
@@ -95,8 +98,9 @@ const html = `
     <body>
 	<div>
 	        <img src="${ICON_URL}">
-            <h1>${MESSAGE}</h1>
+            <h1>${TITLE}</h1>
             <p><a href="itms-services://?action=download-manifest&url=${MANIFEST_URL}" class="round-button">Install</a></p>
+			<p><a href="https://github.com/eggz6/ipa-uploader">eggz6 ipa</a></p>
 	</div>
     </body>
 </html>
