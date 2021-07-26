@@ -46,8 +46,7 @@ func main() {
 
 ```
 
-#For more infomation
-
-[]("https://github.com/eggz6/ipa-uploader/tree/master/example")
+# For more infomation
+[example]("https://github.com/eggz6/ipa-uploader/tree/master/example")
 
 
