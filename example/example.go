@@ -17,7 +17,7 @@ func main() {
 	source := *_ipa
 	up := uploader.NewFS()
 
-	res, err := ipa.Do(context.TODO(), source, "AppIcon60x60@3x.png", up)
+	res, err := ipa.Do(context.TODO(), source, "Payload/Runner.app/AppIcon60x60@3x.png", up)
 	if err != nil {
 		log.Fatalf("ipa do failed. err=%v", err)
 	}

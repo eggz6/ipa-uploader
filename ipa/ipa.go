@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"strings"
+	"regexp"
 
 	"github.com/eggz6/ipa-uploader/plist"
 	"github.com/eggz6/utils/format"
@@ -22,8 +22,9 @@ func OpenIPA(path string) (*zip.ReadCloser, error) {
 
 func ParseInfoPList(zr *zip.ReadCloser) (map[string]string, error) {
 	var plistReader io.ReadCloser
+	reg, _ := regexp.Compile(`(Payload\/.*\.app\/Info\.plist)$`)
 	for _, f := range zr.File {
-		if strings.HasSuffix(f.Name, "Payload/Runner.app/Info.plist") {
+		if reg.Match([]byte(f.Name)) {
 			r, err := f.Open()
 			if err != nil {
 				return nil, err

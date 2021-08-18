@@ -47,7 +47,7 @@ func Do(ctx context.Context, ipa string, icon string, up Uploader) (*Result, err
 
 	chain := []exec{
 		parsePList(ctx),
-		readIconData(ctx, "Payload/Runner.app/"+icon),
+		readIconData(ctx, icon),
 		uploadIPAFile(ctx),
 		uploadManifest(ctx),
 		uploadInstallHTML(ctx),
