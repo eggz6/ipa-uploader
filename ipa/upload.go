@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -83,6 +84,8 @@ func decorator(ctx context.Context, f exec) error {
 type exec func(e *entity) error
 
 func parsePList(ctx context.Context) exec {
+	log.Println("parse PList")
+
 	return func(e *entity) error {
 		zr, err := OpenIPA(e.ipa)
 		if err != nil {
@@ -121,6 +124,8 @@ func upload(ctx context.Context, e *entity, r io.Reader, fileName string) (strin
 }
 
 func readIconData(ctx context.Context, iconName string) exec {
+	log.Println("read icon data")
+
 	return func(e *entity) error {
 		iconBytes, err := ReadIconData(e.zr, iconName)
 		if err != nil {
@@ -140,10 +145,12 @@ func readIconData(ctx context.Context, iconName string) exec {
 }
 
 func uploadIPAFile(ctx context.Context) exec {
+	log.Println("upload ipa file")
+
 	return func(e *entity) error {
 		f, err := os.Open(e.ipa)
 		if err != nil {
-			return fmt.Errorf("upload ipa open file failed. entity=%+v,err=%v", err)
+			return fmt.Errorf("upload ipa open file failed. err=%v", err)
 		}
 
 		defer f.Close()
@@ -152,7 +159,7 @@ func uploadIPAFile(ctx context.Context) exec {
 
 		url, err := upload(ctx, e, f, name)
 		if err != nil {
-			return fmt.Errorf("upload ipa file failed. entity=%+v,err=%v", err)
+			return fmt.Errorf("upload ipa file failed. err=%v", err)
 		}
 
 		e.ipaURL = url
@@ -162,6 +169,8 @@ func uploadIPAFile(ctx context.Context) exec {
 }
 
 func uploadManifest(ctx context.Context) exec {
+	log.Println("upload manifest file")
+
 	return func(e *entity) error {
 		content := SpellManifest(e.ipaURL, e.bid, e.bver, e.btitle, e.iconURL)
 
@@ -183,7 +192,7 @@ func uploadInstallHTML(ctx context.Context) exec {
 
 		url, err := upload(ctx, e, bytes.NewBuffer([]byte(content)), "install.html")
 		if err != nil {
-			return fmt.Errorf("upload install html failed. entity=%+v,err=%v", err)
+			return fmt.Errorf("upload install html failed. entity=%+v,err=%v", e, err)
 		}
 
 		e.installHTMLURL = url
@@ -196,12 +205,12 @@ func uploadQRCode(ctx context.Context) exec {
 	return func(e *entity) error {
 		png, err := qrcode.Encode(e.installHTMLURL, qrcode.Medium, 256)
 		if err != nil {
-			return fmt.Errorf("encode install html to qrcode failed. entity=%+v,err=%v", err)
+			return fmt.Errorf("encode install html to qrcode failed. entity=%+v,err=%v", e, err)
 		}
 
 		url, err := upload(ctx, e, bytes.NewBuffer(png), "qrcode.png")
 		if err != nil {
-			return fmt.Errorf("upload install html failed. entity=%+v,err=%v", err)
+			return fmt.Errorf("upload install html failed. entity=%+v,err=%v", e, err)
 		}
 
 		e.qrURL = url
