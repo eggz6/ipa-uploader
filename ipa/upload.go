@@ -124,8 +124,6 @@ func upload(ctx context.Context, e *entity, r io.Reader, fileName string) (strin
 }
 
 func readIconData(ctx context.Context, iconName string) exec {
-	log.Println("read icon data")
-
 	return func(e *entity) error {
 		iconBytes, err := ReadIconData(e.zr, iconName)
 		if err != nil {
@@ -140,13 +138,13 @@ func readIconData(ctx context.Context, iconName string) exec {
 		e.iconURL = url
 		e.zr.Close()
 
+		log.Println("upload icon success")
+
 		return nil
 	}
 }
 
 func uploadIPAFile(ctx context.Context) exec {
-	log.Println("upload ipa file")
-
 	return func(e *entity) error {
 		f, err := os.Open(e.ipa)
 		if err != nil {
@@ -164,12 +162,12 @@ func uploadIPAFile(ctx context.Context) exec {
 
 		e.ipaURL = url
 
+		log.Println("upload ipa file success")
 		return nil
 	}
 }
 
 func uploadManifest(ctx context.Context) exec {
-	log.Println("upload manifest file")
 
 	return func(e *entity) error {
 		content := SpellManifest(e.ipaURL, e.bid, e.bver, e.btitle, e.iconURL)
@@ -180,6 +178,7 @@ func uploadManifest(ctx context.Context) exec {
 		}
 
 		e.manifestURL = url
+		log.Println("upload manifest file success")
 
 		return nil
 	}
@@ -196,6 +195,7 @@ func uploadInstallHTML(ctx context.Context) exec {
 		}
 
 		e.installHTMLURL = url
+		log.Println("upload install html success")
 
 		return nil
 	}
@@ -214,6 +214,7 @@ func uploadQRCode(ctx context.Context) exec {
 		}
 
 		e.qrURL = url
+		log.Println("upload qrcode success")
 
 		return nil
 	}
