@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"regexp"
+	"strings"
 
 	"github.com/eggz6/ipa-uploader/plist"
 	"github.com/eggz6/utils/format"
@@ -62,7 +63,7 @@ func ParseInfoPList(zr *zip.ReadCloser) (map[string]string, error) {
 func ReadIconData(zr *zip.ReadCloser, iconName string) ([]byte, error) {
 	var icon io.ReadCloser
 	for _, f := range zr.File {
-		if f.Name == iconName {
+		if strings.Contains(f.Name, iconName) {
 			r, err := f.Open()
 			if err != nil {
 				return nil, err

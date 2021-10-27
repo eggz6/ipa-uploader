@@ -8,14 +8,16 @@ import (
 
 	"github.com/eggz6/ipa-uploader/ipa"
 	"github.com/eggz6/ipa-uploader/uploader"
-	"github.com/gin-gonic/gin"
 )
 
 var _ipa = flag.String("ipa", "./Runner.ipa", "source ipa file path")
 
 func main() {
 	source := *_ipa
-	up := uploader.NewFS()
+	up, err := uploader.NewOss("bucket", "endpoint", "id", "key")
+	if err != nil {
+		log.Fatalf("new oss upload failed. err=%v", err)
+	}
 
 	res, err := ipa.Do(context.TODO(), source, "Payload/Runner.app/AppIcon60x60@3x.png", up)
 	if err != nil {
@@ -23,8 +25,4 @@ func main() {
 	}
 
 	log.Println(fmt.Sprintf("success, res=%+v", res))
-	router := gin.Default()
-	router.Static("output", "output")
-
-	router.Run(":8080")
 }
